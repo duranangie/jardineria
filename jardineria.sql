@@ -938,3 +938,33 @@ FROM cliente c
 LEFT JOIN pago p ON c.codigo_cliente = p.codigo_cliente
 JOIN empleado e ON c.codigo_empleado_rep_ventas = e.codigo_empleado
 WHERE p.codigo_cliente IS NULL;
+
+
+
+select codigo_empleado_rep_ventas as codigo , nombre as nombre_Principal , apellido1 as apellido
+from cliente
+inner join empleado
+on cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado ;
+
+
+select distinct nombre_cliente as cliente , nombre as nombreRepresentante
+from pago
+inner join cliente
+on pago.codigo_cliente = cliente.codigo_cliente
+inner join empleado
+on cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado;
+
+
+SELECT DISTINCT nombre_cliente , nombre
+from cliente 
+LEFT JOIN pago on cliente.codigo_cliente = pago.codigo_cliente
+inner JOIN empleado on cliente.codigo_empleado_rep_ventas = empleado.codigo_empleado
+where pago.codigo_cliente is null;
+
+select cliente.linea_direccion1 as direccion , cliente.region as nombre
+from empleado 
+inner join cliente
+on empleado.codigo_empleado = cliente.codigo_empleado_rep_ventas
+inner join oficina
+on empleado.codigo_oficina = oficina.codigo_oficina
+where cliente.region = 'Fuenlabrada';
