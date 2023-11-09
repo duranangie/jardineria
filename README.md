@@ -241,3 +241,20 @@ WHERE c.codigo_empleado_rep_ventas IS NULL;
         
 ```
 
+
+## tercer consulta
+
+
+
+1. 
+```sql
+select o.codigo_oficina , o.ciudad from oficina o;    
+```
+
+
+2. 
+```sql
+select o.telefono , o.ciudad from oficina o where pais='España'   
+```
+
+
