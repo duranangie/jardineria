@@ -338,7 +338,7 @@ select * from pedido where month(fecha_entrega)=1;
 
 13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
 ```SQL
-select * from pago  where year(fecha_pago) = 2009 and forma_pago = 'Paypal' order by fecha_pago DESC;
+select * from pago  where year(fecha_pago) = 2008 and forma_pago = 'Paypal' order by fecha_pago DESC;
 ```
 
 14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
@@ -348,12 +348,12 @@ select distinct forma_pago from pago;
 
 15. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
 ```SQL
-select codigo_producto, nombre, precio_venta from producto where gama = 'Ornamentales' and cantidad_en_stock < 183 order by precio_venta DESC;
+select codigo_producto, nombre, precio_venta from producto where gama = 'Ornamentales' and cantidad_en_stock > 100 order by precio_venta DESC;
 ```
 
 16. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
 ```SQL
-select nombre_cliente from cliente where ciudad = 'Madrid' and codigo_empleado_rep_ventas = 11 or 30;
+select * from cliente where ciudad = 'Madrid' and codigo_empleado_rep_ventas = 11 or codigo_empleado_rep_ventas = 30;
 
 ```
 
