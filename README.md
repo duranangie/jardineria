@@ -307,6 +307,9 @@ select distinct codigo_cliente, fecha_pago from pago  where year(fecha_pago) = 2
 9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
 ```SQL
 
+   select codigo_pedido , codigo_cliente, fecha_esperada, fecha_entrega from pedido where fecha_esperada < fecha_entrega ;
+
+
 ```
 10. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
 
@@ -316,35 +319,116 @@ Utilizando la función ADDDATE de MySQL.
 - ¿Sería posible resolver esta consulta utilizando el operador de suma + o resta - ?
 ```SQL
 
+   select codigo_pedido , codigo_cliente, fecha_esperada, fecha_entrega from pedido where fecha_entrega <= ADDDATE(fecha_esperada, -2) ;
+
 ```
 
 11. Devuelve un listado de todos los pedidos que fueron rechazados en 2009.
+
 ```SQL
+select * from pedido where estado='rechazado' and year(fecha_pedido)=2009;
 
 ```
 
 12. Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.
 ```SQL
+select * from pedido where month(fecha_entrega)=1;
 
 ```
 
 13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
 ```SQL
-
+select * from pago  where year(fecha_pago) = 2009 and forma_pago = 'Paypal' order by fecha_pago DESC;
 ```
 
 14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
 ```SQL
-
+select distinct forma_pago from pago;
 ```
 
 15. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
 ```SQL
-
+select codigo_producto, nombre, precio_venta from producto where gama = 'Ornamentales' and cantidad_en_stock < 183 order by precio_venta DESC;
 ```
 
 16. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
 ```SQL
+select nombre_cliente from cliente where ciudad = 'Madrid' and codigo_empleado_rep_ventas = 11 or 30;
 
 ```
+
+
+### 1.4.8 Subconsultas
+
+#### 1.4.8.1 Con operadores básicos de comparación
+
+1. Devuelve el nombre del cliente con mayor límite de crédito.
+```SQL
+select nombre_cliente from cliente order by limite_credito desc limit 1; 
+ 
+```
+
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+```SQL
+select nombre from producto order by precio_venta desc limit 1;
+
+```
+
+3. Devuelve el nombre del producto del que se han vendido más unidades. (Tenga en cuenta que tendrá que calcular cuál es el número total de unidades que se han vendido de cada producto a partir de los datos de la tabla `detalle_pedido`)
+
+```SQL
+SELECT p.nombre
+FROM detalle_pedido d
+JOIN producto p ON d.codigo_producto = p.codigo_producto
+GROUP BY d.codigo_producto, p.nombre
+ORDER BY SUM(d.cantidad) DESC
+LIMIT 1;
+```
+
+4. Los clientes cuyo límite de crédito sea mayor que los pagos que haya realizado. (Sin utilizar `INNER JOIN`).
+
+```SQL
+select * from cliente
+where limite_credito > (select sum(total) from pago where codigo_cliente = cliente.codigo_cliente);
+```
+5. Devuelve el producto que más unidades tiene en stock.
+
+```SQL
+select nombre from producto where cantidad_en_stock = (select max(cantidad_en_stock) from producto);
+```
+
+6. Devuelve el producto que menos unidades tiene en stock.
+
+```SQL
+select nombre from producto where cantidad_en_stock = (select min(cantidad_en_stock) from producto);
+```
+
+7. Devuelve el nombre, los apellidos y el email de los empleados que están a cargo de **Alberto Soria**.
+
+```SQL
+select concat(nombre, ' ', apellido1, ' ', apellido2), email from empleado where codigo_jefe in ( select distinct jefe.codigo_empleado from empleado em      join empleado jefe on em.codigo_jefe = jefe.codigo_empleado where jefe.nombre like 'al%' );
+```
+
+#### 1.4.8.2 Subconsultas con ALL y ANY
+
+1. Devuelve el nombre del cliente con mayor límite de crédito.
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+3. Devuelve el producto que menos unidades tiene en stock.
+
+#### 1.4.8.3 Subconsultas con IN y NOT IN
+
+1. Devuelve el nombre, apellido1 y cargo de los empleados que no representen a ningún cliente.
+2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+3. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+4. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+5. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos empleados que no sean representante de ventas de ningún cliente.
+6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
+7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
+
+#### 1.4.8.4 Subconsultas con EXISTS y NOT EXISTS
+
+1. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+2. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+3. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+4. Devuelve un listado de los productos que han aparecido en un pedido alguna vez.
 
