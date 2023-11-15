@@ -449,27 +449,92 @@ where cantidad_en_stock <= ALL
 
 ```SQL
 
-
+select nombre,apellido1,puesto  from empleado where codigo_empleado not in (select codigo_empleado_rep_ventas from cliente);  
 
 ```
 
 
 2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
 
+```SQL
+
+select *  from cliente where codigo_cliente not in (select codigo_cliente from pago);  
+
+
+```
+
+
 3. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+
+```SQL
+
+select *  from cliente where codigo_cliente in (select codigo_cliente from pago);  
+
+
+
+```
 
 4. Devuelve un listado de los productos que nunca han aparecido en un pedido.
 
+```SQL
+select codigo_producto,nombre from producto where codigo_producto not in (select  codigo_producto from detalle_pedido); 
+
+
+```
+
+
 5. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos empleados que no sean representante de ventas de ningún cliente.
 
+
+```SQL
+
+select empleado.nombre, empleado.apellido1, empleado.apellido2 from empleado where codigo_empleado not in (select codigo_empleado_rep_ventas from cliente);
+
+
+```
 6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
 
-7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
+```SQL
 
+
+
+```
+7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
+```SQL
+
+
+
+
+```
 #### 1.4.8.4 Subconsultas con EXISTS y NOT EXISTS
 
 1. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+```SQL
+
+
+
+```
+
+
 2. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+```SQL
+
+
+
+```
+
 3. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+```SQL
+
+
+
+```
+
+
 4. Devuelve un listado de los productos que han aparecido en un pedido alguna vez.
 
+```SQL
+
+
+
+```
