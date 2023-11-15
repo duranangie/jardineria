@@ -488,8 +488,8 @@ select codigo_producto,nombre from producto where codigo_producto not in (select
 
 ```SQL
 
-select empleado.nombre, empleado.apellido1, empleado.apellido2 from empleado where codigo_empleado not in (select codigo_empleado_rep_ventas from cliente);
-
+select empleado.nombre, empleado.apellido1, empleado.apellido2, oficina.telefono from empleado, oficina where codigo_empleado not in (select codigo_empleado_rep_ventas from cliente)
+AND empleado.codigo_oficina = oficina.codigo_oficina;
 
 ```
 6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
