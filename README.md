@@ -412,17 +412,58 @@ select concat(nombre, ' ', apellido1, ' ', apellido2), email from empleado where
 #### 1.4.8.2 Subconsultas con ALL y ANY
 
 1. Devuelve el nombre del cliente con mayor límite de crédito.
+
+```SQL
+select nombre_cliente,limite_credito
+from cliente
+where limite_credito >= ALL
+(select limite_credito from cliente);
+
+```
+
 2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+
+```SQL
+select nombre 
+from producto 
+where precio_venta >= ALL
+(select precio_venta from producto);
+
+```
+
 3. Devuelve el producto que menos unidades tiene en stock.
+
+```SQL
+select nombre 
+from producto 
+where cantidad_en_stock <= ALL
+(select cantidad_en_stock from producto);
+
+```
+
+
 
 #### 1.4.8.3 Subconsultas con IN y NOT IN
 
 1. Devuelve el nombre, apellido1 y cargo de los empleados que no representen a ningún cliente.
+
+```SQL
+
+
+
+```
+
+
 2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+
 3. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+
 4. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+
 5. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos empleados que no sean representante de ventas de ningún cliente.
+
 6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
+
 7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
 
 #### 1.4.8.4 Subconsultas con EXISTS y NOT EXISTS
