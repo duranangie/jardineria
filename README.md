@@ -496,11 +496,14 @@ AND empleado.codigo_oficina = oficina.codigo_oficina;
 
 ```SQL
 
+select * from oficina where codigo_oficina not in (select codigo_oficina from empleado where codigo_empleado in (select codigo_empleado_rep_ventas from cliente where codigo_cliente in (select codigo_cliente from pedido where codigo_pedido in (select codigo_pedido from detalle_pedido where codigo_producto in ( select codigo_producto from producto where gama = 'Frutales'))))) ;
 
 
 ```
 7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
 ```SQL
+
+select * from cliente where codigo_cliente not in (select codigo_cliente from pago where codigo_cliente ) and codigo_cliente in (select codigo_cliente from pedido ) ;
 
 
 
@@ -512,6 +515,7 @@ AND empleado.codigo_oficina = oficina.codigo_oficina;
 ```SQL
 
 
+select * from cliente where not exists ( select codigo_cliente from pago where pago.codigo_cliente= cliente.codigo_cliente);
 
 ```
 
@@ -520,11 +524,14 @@ AND empleado.codigo_oficina = oficina.codigo_oficina;
 ```SQL
 
 
+select * from cliente where exists ( select codigo_cliente from pago where pago.codigo_cliente= cliente.codigo_cliente);
 
 ```
 
 3. Devuelve un listado de los productos que nunca han aparecido en un pedido.
 ```SQL
+
+select * from producto where not exists ( select codigo_pedido from detalle_pedido where producto.codigo_producto = detalle_pedido.codigo_producto);
 
 
 
@@ -535,6 +542,7 @@ AND empleado.codigo_oficina = oficina.codigo_oficina;
 
 ```SQL
 
+select * from producto where exists ( select codigo_pedido from detalle_pedido where producto.codigo_producto = detalle_pedido.codigo_producto);
 
 
 ```
